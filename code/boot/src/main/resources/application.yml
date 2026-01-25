@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: boot
+  jackson:
+    time-zone: UTC
+  datasource:
+    url: jdbc:postgresql://${DB_URL}/${DB_NAME}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+external-book:
+  base: https://openlibrary.org
