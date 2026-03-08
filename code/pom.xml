@@ -31,7 +31,7 @@
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
 
         <lombok.version>1.18.38</lombok.version>
-        <google.zxing.version>3.5.3</google.zxing.version>
+        <google.zxing.version>3.5.4</google.zxing.version>
     </properties>
 
     <dependencies>
