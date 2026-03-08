@@ -1,0 +1,4 @@
+services:
+  app_db:
+    volumes:
+      - ./boot/src/test/resources/docker/postgres_init:/docker-entrypoint-initdb.d/

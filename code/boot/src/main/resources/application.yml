@@ -1,8 +1,6 @@
 spring:
   application:
     name: boot
-  jackson:
-    time-zone: UTC
   datasource:
     url: jdbc:postgresql://${DB_URL}/${DB_NAME}
     username: ${DB_USER}

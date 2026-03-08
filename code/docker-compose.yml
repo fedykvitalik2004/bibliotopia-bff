@@ -1,36 +1,15 @@
 services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile-app
-    container_name: bibliotopia_bff
-    ports:
-      - "8080:8080"
-    environment:
-      DB_URL: app_db
-      DB_NAME: ${APP_DB_NAME}
-      DB_USER: ${APP_DB_USER}
-      DB_PASSWORD: ${APP_DB_PASSWORD}
-    depends_on:
-      app_db:
-        condition: service_healthy
   app_db:
     image: postgres:17
     container_name: postgres_db
     environment:
-      POSTGRES_USER: ${APP_DB_USER}
-      POSTGRES_PASSWORD: ${APP_DB_PASSWORD}
-      POSTGRES_DB: ${APP_DB_NAME}
-      TZ: UTC
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: user-pwd
+      POSTGRES_DB: bibliotopia
     ports:
       - "5432:5432"
     volumes:
       - app_db_data:/var/lib/postgresql/data
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U ${APP_DB_USER} -d ${APP_DB_NAME}" ]
-      interval: 5s
-      retries: 5
-      timeout: 5s
   sonar_db:
     image: postgres:17
     container_name: sonar_db
