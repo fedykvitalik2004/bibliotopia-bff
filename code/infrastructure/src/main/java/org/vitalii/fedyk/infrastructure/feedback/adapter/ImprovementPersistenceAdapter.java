@@ -18,7 +18,7 @@ public class ImprovementPersistenceAdapter implements ImprovementQueryPort {
     final String sql =
         """
                     SELECT id, title, description, 'BUG' AS type, importance, created_at FROM bug_reports
-                    UNION ALL
+                    UNION
                     SELECT id, title, description, 'FEATURE' AS type, importance, created_at FROM feature_requests
                     ORDER BY created_at DESC
                     """;
