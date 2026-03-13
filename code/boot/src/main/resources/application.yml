@@ -14,5 +14,6 @@ spring:
         jdbc:
           time_zone: UTC
         dialect: org.hibernate.dialect.PostgreSQLDialect
-external-book:
-  base: https://openlibrary.org
+apis:
+  book-catalog:
+    base: https://openlibrary.org

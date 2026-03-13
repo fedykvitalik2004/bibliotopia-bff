@@ -1,4 +1,4 @@
-package org.vitalii.fedyk.author.error;
+package org.vitalii.fedyk.error;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;

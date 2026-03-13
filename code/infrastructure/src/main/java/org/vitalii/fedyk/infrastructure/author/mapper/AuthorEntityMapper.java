@@ -1,12 +1,12 @@
 package org.vitalii.fedyk.infrastructure.author.mapper;
 
 import org.mapstruct.Mapper;
-import org.vitalii.fedyk.author.Author;
-import org.vitalii.fedyk.infrastructure.author.AuthorEntity;
+import org.vitalii.fedyk.author.model.Author;
+import org.vitalii.fedyk.infrastructure.author.jpa.AuthorEntity;
 
-@Mapper(componentModel = "spring", uses = AuthorTranslationMapper.class)
-public interface AuthorMapper {
-  AuthorEntity toEntity(Author author);
+@Mapper(componentModel = "spring")
+public interface AuthorEntityMapper {
+  AuthorEntity toAuthorEntity(final Author author);
 
-  Author fromEntity(AuthorEntity authorEntity);
+  Author toAuthor(final AuthorEntity authorEntity);
 }

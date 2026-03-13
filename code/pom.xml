@@ -103,10 +103,18 @@
                 <artifactId>core</artifactId>
                 <version>${google.zxing.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>com.google.zxing</groupId>
                 <artifactId>javase</artifactId>
                 <version>${google.zxing.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.instancio</groupId>
+                <artifactId>instancio-junit</artifactId>
+                <version>5.3.0</version>
+                <scope>test</scope>
             </dependency>
 
         </dependencies>

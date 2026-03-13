@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>Validation Error Messages (English)</comment>
+    <entry key="error.book.isbn.mandatory">ISBN is mandatory</entry>
+    <entry key="error.book.price.mandatory">Price is mandatory</entry>
+    <entry key="error.book.price.positive">Price must be greater than zero</entry>
+    <entry key="error.book.translations.required">At least one translation is required</entry>
+    <entry key="error.book.genres.required">At least one genre is required</entry>
+    <entry key="error.book.authorIds.required">At least one author ID is required</entry>
+    <entry key="error.book.title.mandatory">Title is mandatory</entry>
+    <entry key="error.book.description.mandatory">Description is mandatory</entry>
+    <entry key="error.book.genre.invalid">Genre cannot be blank</entry>
+    <entry key="error.book.authorId.invalid">Author ID must be a positive number</entry>
+
+    <entry key="error.author.date.range.invalid">Birth date can't be after death date</entry>
+    <entry key="error.author.birthDate.required">Birth date is required</entry>
+    <entry key="error.author.birthDate.past">Birth date must be in the past</entry>
+
+    <entry key="error.author.translation.firstName.mandatory">First name is required</entry>
+    <entry key="error.author.translation.firstName.size">First name must be under 100 chars</entry>
+    <entry key="error.author.translation.lastName.mandatory">Last name is required</entry>
+    <entry key="error.author.translation.lastName.size">Last name must be under 100 chars</entry>
+</properties>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>Validation Error Messages (Hebrew)</comment>
+    <entry key="error.book.isbn.mandatory">ISBN הוא שדה חובה</entry>
+    <entry key="error.book.price.mandatory">המחיר הוא שדה חובה</entry>
+    <entry key="error.book.price.positive">המחיר חייב להיות גדול מאפס</entry>
+    <entry key="error.book.translations.required">נדרש תרגום אחד לפחות</entry>
+    <entry key="error.book.genres.required">נדרשת ז'אנר אחד לפחות</entry>
+    <entry key="error.book.authorIds.required">נדרש מזהה מחבר אחד לפחות</entry>
+    <entry key="error.book.title.mandatory">הכותרת היא שדה חובה</entry>
+    <entry key="error.book.description.mandatory">התיאור הוא שדה חובה</entry>
+    <entry key="error.book.genre.invalid">הז'אנר לא יכול להיות ריק</entry>
+    <entry key="error.book.authorId.invalid">מזהה המחבר חייב להיות מספר חיובי</entry>
+
+    <entry key="error.author.date.range.invalid">תאריך הלידה אינו יכול להיות אחרי תאריך המוות</entry>
+    <entry key="error.author.birthDate.required">תאריך הלידה הוא שדה חובה</entry>
+    <entry key="error.author.birthDate.past">תאריך הלידה חייב להיות בעבר</entry>
+    <entry key="error.author.translation.firstName.mandatory">שם פרטי הוא שדה חובה</entry>
+    <entry key="error.author.translation.firstName.size">השם הפרטי חייב להיות קצר מ-100 תווים</entry>
+    <entry key="error.author.translation.lastName.mandatory">שם משפחה הוא שדה חובה</entry>
+    <entry key="error.author.translation.lastName.size">שם המשפחה חייב להיות קצר מ-100 תווים</entry>
+</properties>

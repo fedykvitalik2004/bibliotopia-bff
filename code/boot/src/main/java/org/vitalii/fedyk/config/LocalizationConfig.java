@@ -25,7 +25,7 @@ public class LocalizationConfig {
   @Bean
   public MessageSource messageSource() {
     final ReloadableResourceBundleMessageSource messageSource =
-            new ReloadableResourceBundleMessageSource();
+        new ReloadableResourceBundleMessageSource();
     messageSource.setBasename("classpath:messages");
     messageSource.setDefaultEncoding("UTF-8");
     messageSource.setCacheSeconds(3600);

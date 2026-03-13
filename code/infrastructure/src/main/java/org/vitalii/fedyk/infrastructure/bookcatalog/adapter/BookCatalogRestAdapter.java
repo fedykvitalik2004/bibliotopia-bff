@@ -7,8 +7,8 @@ import java.util.Optional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
-import org.vitalii.fedyk.book.BookIsbnProjection;
-import org.vitalii.fedyk.book.repository.BookCatalogRepository;
+import org.vitalii.fedyk.bookcatalog.model.BookIsbnProjection;
+import org.vitalii.fedyk.bookcatalog.repository.BookCatalogRepository;
 import org.vitalii.fedyk.infrastructure.bookcatalog.client.BookCatalogApiClient;
 
 @Repository

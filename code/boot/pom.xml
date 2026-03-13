@@ -38,6 +38,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.instancio</groupId>
+            <artifactId>instancio-junit</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -45,20 +50,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.flywaydb</groupId>
-                <artifactId>flyway-maven-plugin</artifactId>
-                <version>10.16.0</version> <!-- use latest version -->
-                <configuration>
-                    <url>jdbc:postgresql://localhost:5434/mydb</url>
-                    <user>myuser</user>
-                    <password>mypassword</password>
-
-                    <locations>
-                        <location>filesystem:src/main/resources/db/migration</location>
-                    </locations>
-                </configuration>
             </plugin>
         </plugins>
     </build>

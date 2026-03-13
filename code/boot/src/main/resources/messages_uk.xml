@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>Validation Error Messages (Ukrainian)</comment>
+    <entry key="error.book.isbn.mandatory">ISBN є обов'язковим</entry>
+    <entry key="error.book.price.mandatory">Ціна є обов'язковою</entry>
+    <entry key="error.book.price.positive">Ціна повинна бути більшою за нуль</entry>
+    <entry key="error.book.translations.required">Потрібен принаймні один переклад</entry>
+    <entry key="error.book.genres.required">Потрібен принаймні один жанр</entry>
+    <entry key="error.book.authorIds.required">Потрібен принаймні один ID автора</entry>
+    <entry key="error.book.title.mandatory">Назва є обов'язковою</entry>
+    <entry key="error.book.description.mandatory">Опис є обов'язковим</entry>
+    <entry key="error.book.genre.invalid">Жанр не може бути порожнім</entry>
+    <entry key="error.book.authorId.invalid">ID автора має бути додатним числом</entry>
+
+    <entry key="error.author.date.range.invalid">Дата народження не може бути після дати смерті</entry>
+    <entry key="error.author.birthDate.required">Дата народження є обов'язковою</entry>
+    <entry key="error.author.birthDate.past">Дата народження повинна бути в минулому</entry>
+
+    <entry key="error.author.translation.firstName.mandatory">Ім'я є обов'язковим</entry>
+    <entry key="error.author.translation.firstName.size">Ім'я має бути до 100 символів</entry>
+    <entry key="error.author.translation.lastName.mandatory">Прізвище є обов'язковим</entry>
+    <entry key="error.author.translation.lastName.size">Прізвище має бути до 100 символів</entry>
+</properties>
