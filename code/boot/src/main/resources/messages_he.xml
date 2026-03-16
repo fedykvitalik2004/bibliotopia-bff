@@ -16,8 +16,12 @@
     <entry key="error.author.date.range.invalid">תאריך הלידה אינו יכול להיות אחרי תאריך המוות</entry>
     <entry key="error.author.birthDate.required">תאריך הלידה הוא שדה חובה</entry>
     <entry key="error.author.birthDate.past">תאריך הלידה חייב להיות בעבר</entry>
+
     <entry key="error.author.translation.firstName.mandatory">שם פרטי הוא שדה חובה</entry>
     <entry key="error.author.translation.firstName.size">השם הפרטי חייב להיות קצר מ-100 תווים</entry>
     <entry key="error.author.translation.lastName.mandatory">שם משפחה הוא שדה חובה</entry>
     <entry key="error.author.translation.lastName.size">שם המשפחה חייב להיות קצר מ-100 תווים</entry>
+
+    <!--    Exception messages-->
+    <entry key="error.service.unavailable">השירות אינו זמין זמנית. אנא נסה שוב מאוחר יותר.</entry>
 </properties>

@@ -21,4 +21,7 @@
     <entry key="error.author.translation.firstName.size">Ім'я має бути до 100 символів</entry>
     <entry key="error.author.translation.lastName.mandatory">Прізвище є обов'язковим</entry>
     <entry key="error.author.translation.lastName.size">Прізвище має бути до 100 символів</entry>
+
+    <!--    Exception messages-->
+    <entry key="error.service.unavailable">Сервіс тимчасово недоступний. Будь ласка, спробуйте пізніше.</entry>
 </properties>

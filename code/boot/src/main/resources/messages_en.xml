@@ -21,4 +21,7 @@
     <entry key="error.author.translation.firstName.size">First name must be under 100 chars</entry>
     <entry key="error.author.translation.lastName.mandatory">Last name is required</entry>
     <entry key="error.author.translation.lastName.size">Last name must be under 100 chars</entry>
+
+    <!--    Exception messages-->
+    <entry key="error.service.unavailable">Service is temporarily unavailable. Please try again later.</entry>
 </properties>
