@@ -1,4 +1,8 @@
 services:
   app_db:
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: user-pwd
+      POSTGRES_DB: bibliotopia
     volumes:
       - ./boot/src/test/resources/docker/postgres_init:/docker-entrypoint-initdb.d/
