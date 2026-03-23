@@ -3,9 +3,7 @@ package org.vitalii.fedyk;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -34,11 +32,10 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler(CurrencyServiceException.class)
   @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
-  public ErrorDto handleCurrencyServiceException(final CurrencyServiceException exception, final Locale locale) {
-    final String resolvedMessage = this.messageSource.getMessage(exception.getMessage(), null, locale);
-    return ErrorDto.builder()
-            .title(resolvedMessage)
-            .additionalParams(null)
-            .build();
+  public ErrorDto handleCurrencyServiceException(
+      final CurrencyServiceException exception, final Locale locale) {
+    final String resolvedMessage =
+        this.messageSource.getMessage(exception.getMessage(), null, locale);
+    return ErrorDto.builder().title(resolvedMessage).additionalParams(null).build();
   }
 }

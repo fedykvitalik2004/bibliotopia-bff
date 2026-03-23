@@ -9,8 +9,6 @@ import org.springframework.web.client.RestClient;
 public class RestClientsConfig {
   @Bean
   public RestClient currencyRestClient(@Value("${apis.currency.base}") final String baseUrl) {
-    return RestClient.builder()
-            .baseUrl(baseUrl)
-            .build();
+    return RestClient.builder().baseUrl(baseUrl).build();
   }
 }
