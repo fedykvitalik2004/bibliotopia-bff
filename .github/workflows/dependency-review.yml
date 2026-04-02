@@ -16,7 +16,7 @@ jobs:
         uses: actions/dependency-review-action@v4
         with:
           comment-summary-in-pr: always
-          fail-on-severity: moderate       
+          fail-on-severity: moderate
       - name: Convert JSON to Markdown Table
         id: format_table
         run: |

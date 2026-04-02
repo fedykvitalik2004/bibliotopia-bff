@@ -13,7 +13,7 @@ import java.time.LocalDate;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -29,9 +29,10 @@ import org.vitalii.fedyk.author.model.Author;
 import org.vitalii.fedyk.author.usecase.CreateAuthorUseCase;
 import org.vitalii.fedyk.author.usecase.GetAllAuthorsUseCase;
 import org.vitalii.fedyk.author.usecase.GetAuthorByIdUseCase;
+import org.vitalii.fedyk.config.TestJacksonConfig;
 
 @WebMvcTest({AuthorController.class})
-@Import(GlobalExceptionHandler.class)
+@Import({GlobalExceptionHandler.class, TestJacksonConfig.class})
 class AuthorControllerIT {
   @Autowired private MockMvc mockMvc;
 
