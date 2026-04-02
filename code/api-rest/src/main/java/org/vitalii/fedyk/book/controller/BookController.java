@@ -48,6 +48,13 @@ public class BookController {
         description = "Validation failed: Check the localized error details",
         content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
   })
+  /**
+   * Creates a new book based on the provided request.
+   *
+   * @param request The book request containing the details of the book to be created. Must be a
+   *     valid request.
+   * @return A ResponseEntity containing the created book and a status of 201 (Created).
+   */
   public ResponseEntity<BookResponse> create(@Valid @RequestBody BookRequest request) {
     final CreateBookCommand command = this.requestMapper.toCreateBookCommand(request);
     final Book savedBook = this.createBookUseCase.create(command);
