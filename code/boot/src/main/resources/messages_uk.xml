@@ -10,6 +10,7 @@
     <entry key="error.book.authorIds.required">Потрібен принаймні один ID автора</entry>
     <entry key="error.book.title.mandatory">Назва є обов'язковою</entry>
     <entry key="error.book.description.mandatory">Опис є обов'язковим</entry>
+    <entry key="error.book.language.mandatory">Мова є обов'язковою</entry>
     <entry key="error.book.genre.invalid">Жанр не може бути порожнім</entry>
     <entry key="error.book.authorId.invalid">ID автора має бути додатним числом</entry>
 

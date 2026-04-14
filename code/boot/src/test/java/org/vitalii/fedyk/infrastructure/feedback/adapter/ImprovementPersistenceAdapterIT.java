@@ -9,7 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureJdbc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.vitalii.fedyk.feedback.model.ImprovementItem;
+import org.vitalii.fedyk.bibliotopiabff.domain.feedback.model.ImprovementItem;
+import org.vitalii.fedyk.bibliotopiabff.infrastructure.feedback.out.persistence.ImprovementPersistenceAdapter;
 
 @SpringBootTest(classes = ImprovementPersistenceAdapter.class)
 @AutoConfigureJdbc

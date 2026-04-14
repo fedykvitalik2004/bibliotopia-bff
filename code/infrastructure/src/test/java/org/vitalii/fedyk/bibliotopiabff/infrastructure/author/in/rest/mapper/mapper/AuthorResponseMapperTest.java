@@ -1,0 +1,42 @@
+package org.vitalii.fedyk.bibliotopiabff.infrastructure.author.in.rest.mapper.mapper;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.instancio.Select.field;
+
+import org.instancio.Instancio;
+import org.junit.jupiter.api.Test;
+import org.vitalii.fedyk.bibliotopiabff.domain.author.model.Author;
+import org.vitalii.fedyk.bibliotopiabff.infrastructure.author.in.rest.mapper.AuthorResponseMapper;
+import org.vitalii.fedyk.bibliotopiabff.infrastructure.author.in.rest.mapper.AuthorResponseMapperImpl;
+
+class AuthorResponseMapperImplTest {
+  private final AuthorResponseMapper mapper = new AuthorResponseMapperImpl();
+
+  @Test
+  void shouldMapAllAuthorFieldsCorrectly() {
+    // Given
+    final var author =
+        Instancio.of(Author.class)
+            .generate(field(Author::getTranslations), gen -> gen.collection().size(2))
+            .create();
+
+    // When
+    final var response = this.mapper.toResponse(author);
+
+    // Then
+    assertThat(response.id()).isEqualTo(author.getId());
+    assertThat(response.birthDate()).isEqualTo(author.getBirthDate());
+    assertThat(response.deathDate()).isEqualTo(author.getDeathDate());
+    assertThat(response.translations()).hasSameSizeAs(author.getTranslations());
+
+    for (int i = 0; i < author.getTranslations().size(); i++) {
+      var domainTrans = author.getTranslations().get(i);
+      var responseTrans = response.translations().get(i);
+
+      assertThat(responseTrans.firstName()).isEqualTo(domainTrans.getFirstName());
+      assertThat(responseTrans.lastName()).isEqualTo(domainTrans.getLastName());
+      assertThat(responseTrans.description()).isEqualTo(domainTrans.getDescription());
+      assertThat(responseTrans.language()).isEqualTo(domainTrans.getLanguage());
+    }
+  }
+}

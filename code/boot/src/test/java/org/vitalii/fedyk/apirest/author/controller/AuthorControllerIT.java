@@ -1,5 +1,6 @@
 package org.vitalii.fedyk.apirest.author.controller;
 
+import static org.instancio.Select.field;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
@@ -18,17 +19,17 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import org.vitalii.fedyk.GlobalExceptionHandler;
-import org.vitalii.fedyk.author.controller.AuthorController;
-import org.vitalii.fedyk.author.dto.AuthorRequest;
-import org.vitalii.fedyk.author.dto.AuthorResponse;
-import org.vitalii.fedyk.author.dto.TranslationRequest;
-import org.vitalii.fedyk.author.mapper.AuthorRequestMapper;
-import org.vitalii.fedyk.author.mapper.AuthorResponseMapper;
-import org.vitalii.fedyk.author.model.Author;
-import org.vitalii.fedyk.author.usecase.CreateAuthorUseCase;
-import org.vitalii.fedyk.author.usecase.GetAllAuthorsUseCase;
-import org.vitalii.fedyk.author.usecase.GetAuthorByIdUseCase;
+import org.vitalii.fedyk.bibliotopiabff.application.author.port.in.CreateAuthorUseCase;
+import org.vitalii.fedyk.bibliotopiabff.application.author.port.in.GetAllAuthorsUseCase;
+import org.vitalii.fedyk.bibliotopiabff.application.author.port.in.GetAuthorByIdUseCase;
+import org.vitalii.fedyk.bibliotopiabff.domain.author.model.Author;
+import org.vitalii.fedyk.bibliotopiabff.infrastructure.author.in.rest.AuthorController;
+import org.vitalii.fedyk.bibliotopiabff.infrastructure.author.in.rest.dto.request.AuthorRequest;
+import org.vitalii.fedyk.bibliotopiabff.infrastructure.author.in.rest.dto.request.TranslationRequest;
+import org.vitalii.fedyk.bibliotopiabff.infrastructure.author.in.rest.dto.response.AuthorResponse;
+import org.vitalii.fedyk.bibliotopiabff.infrastructure.author.in.rest.mapper.AuthorRequestMapper;
+import org.vitalii.fedyk.bibliotopiabff.infrastructure.author.in.rest.mapper.AuthorResponseMapper;
+import org.vitalii.fedyk.bibliotopiabff.infrastructure.common.in.rest.GlobalExceptionHandler;
 import org.vitalii.fedyk.config.TestJacksonConfig;
 
 @WebMvcTest({AuthorController.class})
@@ -74,7 +75,10 @@ class AuthorControllerIT {
         AuthorRequest.builder()
             .birthDate(LocalDate.MIN)
             .deathDate(LocalDate.MAX)
-            .translations(Instancio.createList(TranslationRequest.class))
+            .translations(
+                Instancio.ofList(TranslationRequest.class)
+                    .generate(field(TranslationRequest::language), gen -> gen.string().length(3, 4))
+                    .create())
             .build();
     final var author = Instancio.create(Author.class);
     final var savedAuthor = Instancio.create(Author.class);

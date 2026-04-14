@@ -12,8 +12,8 @@ public class TestJacksonConfig {
   @Bean
   public ObjectMapper objectMapper() {
     return JsonMapper.builder()
-            .addModule(new JavaTimeModule())
-            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-            .build();
+        .addModule(new JavaTimeModule())
+        .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+        .build();
   }
 }

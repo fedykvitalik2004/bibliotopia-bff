@@ -10,6 +10,7 @@
     <entry key="error.book.authorIds.required">At least one author ID is required</entry>
     <entry key="error.book.title.mandatory">Title is mandatory</entry>
     <entry key="error.book.description.mandatory">Description is mandatory</entry>
+    <entry key="error.book.language.mandatory">Language is mandatory</entry>
     <entry key="error.book.genre.invalid">Genre cannot be blank</entry>
     <entry key="error.book.authorId.invalid">Author ID must be a positive number</entry>
 

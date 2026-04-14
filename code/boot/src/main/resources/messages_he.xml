@@ -10,6 +10,7 @@
     <entry key="error.book.authorIds.required">נדרש מזהה מחבר אחד לפחות</entry>
     <entry key="error.book.title.mandatory">הכותרת היא שדה חובה</entry>
     <entry key="error.book.description.mandatory">התיאור הוא שדה חובה</entry>
+    <entry key="error.book.language.mandatory">השפה היא חובה</entry>
     <entry key="error.book.genre.invalid">הז'אנר לא יכול להיות ריק</entry>
     <entry key="error.book.authorId.invalid">מזהה המחבר חייב להיות מספר חיובי</entry>
 
