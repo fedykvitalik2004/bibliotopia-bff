@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
-    <comment>Validation Error Messages (Ukrainian)</comment>
+    <!--    Validation-->
     <entry key="error.book.isbn.mandatory">ISBN є обов'язковим</entry>
     <entry key="error.book.price.mandatory">Ціна є обов'язковою</entry>
     <entry key="error.book.price.positive">Ціна повинна бути більшою за нуль</entry>
@@ -23,6 +23,7 @@
     <entry key="error.author.translation.lastName.mandatory">Прізвище є обов'язковим</entry>
     <entry key="error.author.translation.lastName.size">Прізвище має бути до 100 символів</entry>
 
-    <!--    Exception messages-->
+    <!--    Other-->
     <entry key="error.service.unavailable">Сервіс тимчасово недоступний. Будь ласка, спробуйте пізніше.</entry>
+    <entry key="error.book.not_found">Книгу з ID {0} не знайдено</entry>
 </properties>

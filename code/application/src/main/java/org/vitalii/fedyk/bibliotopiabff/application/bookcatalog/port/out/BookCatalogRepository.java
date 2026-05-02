@@ -1,6 +1,5 @@
 package org.vitalii.fedyk.bibliotopiabff.application.bookcatalog.port.out;
 
-import java.util.Optional;
 import org.vitalii.fedyk.bibliotopiabff.application.bookcatalog.dto.BookIsbnProjection;
 
 /**
@@ -15,9 +14,7 @@ public interface BookCatalogRepository {
    * Retrieves detailed information about a book based on its ISBN.
    *
    * @param isbn the International Standard Book Number (ISBN) of the book
-   * @return an {@link Optional} containing {@link BookIsbnProjection} if a book with the given ISBN
-   *     exists, or {@link Optional#empty()} if not found
-   * @throws IllegalArgumentException if {@code isbn} is null or empty
+   * @return a {@link BookIsbnProjection}
    */
-  Optional<BookIsbnProjection> getBookDetail(final String isbn);
+  BookIsbnProjection getBookDetail(final String isbn);
 }

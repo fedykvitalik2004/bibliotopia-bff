@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
-    <comment>Validation Error Messages (Hebrew)</comment>
+    <!--    Validation-->
     <entry key="error.book.isbn.mandatory">ISBN הוא שדה חובה</entry>
     <entry key="error.book.price.mandatory">המחיר הוא שדה חובה</entry>
     <entry key="error.book.price.positive">המחיר חייב להיות גדול מאפס</entry>
@@ -23,6 +23,7 @@
     <entry key="error.author.translation.lastName.mandatory">שם משפחה הוא שדה חובה</entry>
     <entry key="error.author.translation.lastName.size">שם המשפחה חייב להיות קצר מ-100 תווים</entry>
 
-    <!--    Exception messages-->
+    <!--    Other-->
     <entry key="error.service.unavailable">השירות אינו זמין זמנית. אנא נסה שוב מאוחר יותר.</entry>
+    <entry key="error.book.not_found">ספר עם מזהה {0} לא נמצא</entry>
 </properties>

@@ -35,7 +35,7 @@ public class CreateBookUseCaseImpl implements CreateBookUseCase {
     final List<BookGenre> genres = mapToGenres(command.genres());
 
     final BookIsbnProjection bookIsbnProjection =
-        this.bookCatalogRepository.getBookDetail(command.isbn()).orElseThrow();
+        this.bookCatalogRepository.getBookDetail(command.isbn());
 
     final Book book =
         Book.create(

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
-    <comment>Validation Error Messages (English)</comment>
+    <!--    Validation-->
     <entry key="error.book.isbn.mandatory">ISBN is mandatory</entry>
     <entry key="error.book.price.mandatory">Price is mandatory</entry>
     <entry key="error.book.price.positive">Price must be greater than zero</entry>
@@ -23,6 +23,7 @@
     <entry key="error.author.translation.lastName.mandatory">Last name is required</entry>
     <entry key="error.author.translation.lastName.size">Last name must be under 100 chars</entry>
 
-    <!--    Exception messages-->
+    <!--    Other-->
     <entry key="error.service.unavailable">Service is temporarily unavailable. Please try again later.</entry>
+    <entry key="error.book.not_found">Book with id {0} not found</entry>
 </properties>

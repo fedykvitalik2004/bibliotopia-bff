@@ -1,8 +1,8 @@
 package org.vitalii.fedyk.bibliotopiabff.infrastructure.currency.out.rest;
 
-import static org.vitalii.fedyk.bibliotopiabff.infrastructure.common.ExceptionMessageConstants.SERVICE_UNAVAILABLE;
-
 import java.nio.charset.StandardCharsets;
+
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,8 +12,8 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClient;
 import org.vitalii.fedyk.bibliotopiabff.application.currency.port.out.CurrencyExchangeRateRepository;
-import org.vitalii.fedyk.bibliotopiabff.domain.currency.exception.CurrencyServiceException;
 import org.vitalii.fedyk.bibliotopiabff.domain.currency.model.ExchangeRates;
+import org.vitalii.fedyk.bibliotopiabff.infrastructure.common.exception.ExternalServiceException;
 import org.vitalii.fedyk.bibliotopiabff.infrastructure.currency.out.rest.dto.CurrencyResponseDto;
 
 @Repository
@@ -26,6 +26,7 @@ public class CurrencyExchangeApiAdapter implements CurrencyExchangeRateRepositor
   private String key;
 
   @Override
+  @CircuitBreaker(name = "currencyExchange")
   public ExchangeRates getRates(final String baseCurrency) {
     final MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
     params.add("base", baseCurrency);
@@ -47,7 +48,7 @@ public class CurrencyExchangeApiAdapter implements CurrencyExchangeRateRepositor
                       "External API error: status {} and body {}",
                       response.getStatusCode().value(),
                       errorBody);
-                  throw new CurrencyServiceException(SERVICE_UNAVAILABLE);
+                  throw new ExternalServiceException("Failed to fetch rates");
                 })
             .body(CurrencyResponseDto.class);
 
