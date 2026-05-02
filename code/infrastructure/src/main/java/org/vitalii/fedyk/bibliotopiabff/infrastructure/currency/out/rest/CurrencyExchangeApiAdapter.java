@@ -1,8 +1,7 @@
 package org.vitalii.fedyk.bibliotopiabff.infrastructure.currency.out.rest;
 
-import java.nio.charset.StandardCharsets;
-
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import java.nio.charset.StandardCharsets;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

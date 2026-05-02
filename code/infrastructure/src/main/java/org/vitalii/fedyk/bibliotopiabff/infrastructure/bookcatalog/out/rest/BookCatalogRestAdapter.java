@@ -3,9 +3,8 @@ package org.vitalii.fedyk.bibliotopiabff.infrastructure.bookcatalog.out.rest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.net.http.HttpResponse;
-
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import java.net.http.HttpResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -28,7 +27,7 @@ public class BookCatalogRestAdapter implements BookCatalogRepository {
   @Override
   @CircuitBreaker(name = "bookCatalog")
   public BookIsbnProjection getBookDetail(final String isbn) {
-      final HttpResponse<String> response = this.bookCatalogApiClient.findBooksMetadata(isbn);
+    final HttpResponse<String> response = this.bookCatalogApiClient.findBooksMetadata(isbn);
     final int statusCode = response.statusCode();
 
     if (statusCode == 200) {
@@ -36,17 +35,22 @@ public class BookCatalogRestAdapter implements BookCatalogRepository {
         final JsonNode mainNode = this.objectMapper.readTree(response.body());
         return parseBookDetails(mainNode, isbn);
       } catch (JsonProcessingException exception) {
-        log.error("BookIsbnProjection parsing failed for ISBN: {}. Error: {}", isbn, exception.getMessage(), exception);
+        log.error(
+            "BookIsbnProjection parsing failed for ISBN: {}. Error: {}",
+            isbn,
+            exception.getMessage(),
+            exception);
         throw new ExternalServiceException("Failed to parse external book metadata", exception);
       }
     }
 
     log.error(
-          "External API call failed for ISBN: {}. Status code: {}", isbn, response.statusCode());
+        "External API call failed for ISBN: {}. Status code: {}", isbn, response.statusCode());
     if (response.statusCode() == 404) {
       throw new BookNotFoundException(isbn); // Domain exception. The Circuit Breaker ignores it.
     }
-    throw new ExternalServiceException("External service error while retrieving BookIsbnProjection: " + response.body());
+    throw new ExternalServiceException(
+        "External service error while retrieving BookIsbnProjection: " + response.body());
   }
 
   private BookIsbnProjection parseBookDetails(final JsonNode node, final String isbn) {
