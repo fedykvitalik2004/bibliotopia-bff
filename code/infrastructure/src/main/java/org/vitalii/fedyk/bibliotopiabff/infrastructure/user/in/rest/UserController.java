@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.vitalii.fedyk.bibliotopiabff.application.user.dto.CreateUserCommand;
 import org.vitalii.fedyk.bibliotopiabff.application.user.dto.UserView;
 import org.vitalii.fedyk.bibliotopiabff.application.user.port.in.CreateUserUseCase;
 import org.vitalii.fedyk.bibliotopiabff.infrastructure.common.in.rest.dto.ErrorDto;
