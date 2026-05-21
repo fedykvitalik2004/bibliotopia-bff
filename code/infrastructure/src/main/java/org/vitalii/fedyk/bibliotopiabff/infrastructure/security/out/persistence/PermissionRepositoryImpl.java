@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
-import org.vitalii.fedyk.bibliotopiabff.application.auth.port.out.PermissionRepository;
+import org.vitalii.fedyk.bibliotopiabff.application.security.port.out.PermissionRepository;
 import org.vitalii.fedyk.bibliotopiabff.domain.security.model.Permission;
 import org.vitalii.fedyk.bibliotopiabff.infrastructure.security.out.persistence.entity.PermissionEntity;
 import org.vitalii.fedyk.bibliotopiabff.infrastructure.security.out.persistence.repository.PermissionJpaRepository;

@@ -5,9 +5,9 @@ import static org.instancio.Select.field;
 
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
-import org.vitalii.fedyk.bibliotopiabff.domain.user.model.EncodedPassword;
 import org.vitalii.fedyk.bibliotopiabff.domain.common.model.Email;
 import org.vitalii.fedyk.bibliotopiabff.domain.common.model.Language;
+import org.vitalii.fedyk.bibliotopiabff.domain.user.model.EncodedPassword;
 import org.vitalii.fedyk.bibliotopiabff.domain.user.model.FullName;
 import org.vitalii.fedyk.bibliotopiabff.domain.user.model.User;
 import org.vitalii.fedyk.bibliotopiabff.infrastructure.user.out.persistence.entity.FullNameEmbeddable;

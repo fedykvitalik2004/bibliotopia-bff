@@ -5,7 +5,7 @@ import java.util.Optional;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
-import org.vitalii.fedyk.bibliotopiabff.application.auth.port.out.RoleRepository;
+import org.vitalii.fedyk.bibliotopiabff.application.security.port.out.RoleRepository;
 import org.vitalii.fedyk.bibliotopiabff.domain.security.model.Role;
 import org.vitalii.fedyk.bibliotopiabff.infrastructure.security.out.persistence.entity.RoleEntity;
 import org.vitalii.fedyk.bibliotopiabff.infrastructure.security.out.persistence.repository.RoleJpaRepository;

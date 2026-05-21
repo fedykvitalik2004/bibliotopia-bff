@@ -2,9 +2,9 @@ package org.vitalii.fedyk.bibliotopiabff.infrastructure.user.out.persistence.map
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.vitalii.fedyk.bibliotopiabff.domain.user.model.EncodedPassword;
 import org.vitalii.fedyk.bibliotopiabff.domain.common.model.Email;
 import org.vitalii.fedyk.bibliotopiabff.domain.common.model.Language;
+import org.vitalii.fedyk.bibliotopiabff.domain.user.model.EncodedPassword;
 import org.vitalii.fedyk.bibliotopiabff.domain.user.model.FullName;
 import org.vitalii.fedyk.bibliotopiabff.domain.user.model.User;
 import org.vitalii.fedyk.bibliotopiabff.infrastructure.user.out.persistence.entity.FullNameEmbeddable;
