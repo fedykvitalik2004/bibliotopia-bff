@@ -21,7 +21,7 @@ import org.vitalii.fedyk.bibliotopiabff.infrastructure.currency.out.rest.dto.Cur
 public class CurrencyExchangeApiAdapter implements CurrencyExchangeRateRepository {
   private final RestClient client;
 
-  @Value("${apis.currency.key}")
+  @Value("${application.api.currency.key}")
   private String key;
 
   @Override
