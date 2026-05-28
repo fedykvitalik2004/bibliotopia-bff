@@ -8,7 +8,8 @@ import org.springframework.web.client.RestClient;
 @Configuration
 public class RestClientsConfig {
   @Bean
-  public RestClient currencyRestClient(@Value("${apis.currency.base}") final String baseUrl) {
+  public RestClient currencyRestClient(
+      @Value("${application.api.currency.base}") final String baseUrl) {
     return RestClient.builder().baseUrl(baseUrl).build();
   }
 }

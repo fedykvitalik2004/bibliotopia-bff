@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.Optional;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,6 +38,46 @@ class UserRepositoryImplTest {
     // Then
     assertThat(result).isTrue();
     verify(this.userJpaRepository).existsByEmail(email.value());
+  }
+
+  @Test
+  void shouldReturnUser_whenEmailExistsInDatabase() {
+    // Given
+    final var email = new Email(Instancio.create(String.class));
+    final var entity = Instancio.create(UserEntity.class);
+    final var domainUser = Instancio.create(User.class);
+
+    when(this.userJpaRepository.findByEmail(email.value())).thenReturn(Optional.of(entity));
+    when(this.userMapper.toDomain(entity)).thenReturn(domainUser);
+
+    // When
+    final var result = this.repository.findByEmail(email);
+
+    // Then
+    assertThat(result).isPresent().contains(domainUser);
+
+    verify(this.userJpaRepository).findByEmail(email.value());
+    verify(this.userMapper).toDomain(entity);
+  }
+
+  @Test
+  void shouldReturnUser_whenIdExistsInDatabase() {
+    // Given
+    final long id = Instancio.create(Long.class);
+    final var entity = Instancio.create(UserEntity.class);
+    final var domainUser = Instancio.create(User.class);
+
+    when(this.userJpaRepository.findById(id)).thenReturn(Optional.of(entity));
+    when(this.userMapper.toDomain(entity)).thenReturn(domainUser);
+
+    // When
+    final var result = this.repository.findById(id);
+
+    // Then
+    assertThat(result).isPresent().contains(domainUser);
+
+    verify(this.userJpaRepository).findById(id);
+    verify(this.userMapper).toDomain(entity);
   }
 
   @Test

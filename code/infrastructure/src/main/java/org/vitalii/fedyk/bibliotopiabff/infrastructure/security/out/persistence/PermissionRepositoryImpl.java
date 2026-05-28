@@ -21,6 +21,14 @@ public class PermissionRepositoryImpl implements PermissionRepository {
         .toList();
   }
 
+  @Override
+  public List<Permission> findAllByRoleIdsOrDirectIds(
+      final Set<Long> roleIds, final Set<Long> directPermissionIds) {
+    return this.repository.findAllByRoleIdsOrDirectIds(roleIds, directPermissionIds).stream()
+        .map(PermissionRepositoryImpl::applyMapping)
+        .toList();
+  }
+
   private static Permission applyMapping(final PermissionEntity entity) {
     return new Permission(entity.getId(), entity.getName());
   }

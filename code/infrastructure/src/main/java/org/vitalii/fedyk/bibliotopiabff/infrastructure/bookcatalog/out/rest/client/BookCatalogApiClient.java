@@ -19,7 +19,7 @@ public class BookCatalogApiClient {
   private static final String FIELD_PREFIX = "ISBN:";
 
   public BookCatalogApiClient(
-      @Value("${apis.book-catalog.base}") String baseUrl,
+      @Value("${application.api.book-catalog.base}") String baseUrl,
       @Qualifier("bookCatalogClient") final HttpClient httpClient) {
     this.baseUrl = baseUrl;
     this.httpClient = httpClient;
