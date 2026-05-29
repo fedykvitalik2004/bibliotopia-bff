@@ -5,6 +5,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -43,6 +45,12 @@ public class UserEntity {
   private String language;
 
   private Instant createdAt;
+
+  @Enumerated(value = EnumType.ORDINAL)
+  private UserStatus status;
+
+  @Enumerated(value = EnumType.ORDINAL)
+  private AuthProvider authProvider;
 
   @ElementCollection
   @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))

@@ -1,6 +1,6 @@
 package org.vitalii.fedyk.bibliotopiabff.infrastructure.security.out.acl;
 
-import lombok.AllArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.vitalii.fedyk.bibliotopiabff.application.security.dto.UserIdentityView;
 import org.vitalii.fedyk.bibliotopiabff.application.security.port.out.LoadUserIdentityPort;
@@ -8,9 +8,12 @@ import org.vitalii.fedyk.bibliotopiabff.application.user.dto.UserView;
 import org.vitalii.fedyk.bibliotopiabff.application.user.port.in.GetUserUseCase;
 
 @Component
-@AllArgsConstructor
 public class UserIdentityAclAdapter implements LoadUserIdentityPort {
   private final GetUserUseCase getUserUseCase;
+
+  public UserIdentityAclAdapter(@Lazy final GetUserUseCase getUserUseCase) {
+    this.getUserUseCase = getUserUseCase;
+  }
 
   @Override
   public UserIdentityView loadByUserId(long userid) {

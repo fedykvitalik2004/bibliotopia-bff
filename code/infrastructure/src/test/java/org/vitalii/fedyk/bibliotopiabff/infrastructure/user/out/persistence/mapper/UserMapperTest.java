@@ -10,8 +10,10 @@ import org.vitalii.fedyk.bibliotopiabff.domain.common.model.Language;
 import org.vitalii.fedyk.bibliotopiabff.domain.user.model.EncodedPassword;
 import org.vitalii.fedyk.bibliotopiabff.domain.user.model.FullName;
 import org.vitalii.fedyk.bibliotopiabff.domain.user.model.User;
+import org.vitalii.fedyk.bibliotopiabff.infrastructure.user.out.persistence.entity.AuthProvider;
 import org.vitalii.fedyk.bibliotopiabff.infrastructure.user.out.persistence.entity.FullNameEmbeddable;
 import org.vitalii.fedyk.bibliotopiabff.infrastructure.user.out.persistence.entity.UserEntity;
+import org.vitalii.fedyk.bibliotopiabff.infrastructure.user.out.persistence.entity.UserStatus;
 
 class UserMapperTest {
   private final UserMapper mapper = new UserMapperImpl();
@@ -19,7 +21,12 @@ class UserMapperTest {
   @Test
   void shouldMapUserToUserEntity_whenUserIsProvided() {
     // Given
-    final var user = Instancio.of(User.class).set(field(User::getLanguage), Language.EN).create();
+    final var user =
+        Instancio.of(User.class)
+            .set(field(User::getLanguage), Language.EN)
+            .set(field(User::getAuthProvider), User.AuthProvider.FACEBOOK)
+            .set(field(User::getStatus), User.UserStatus.ACTIVE)
+            .create();
 
     final var expected =
         UserEntity.builder()
@@ -32,6 +39,8 @@ class UserMapperTest {
             .birthDate(user.getBirthDate())
             .language(user.getLanguage().getValue())
             .createdAt(user.getCreatedAt())
+            .authProvider(AuthProvider.FACEBOOK)
+            .status(UserStatus.ACTIVE)
             .roleIds(user.getRoleIds())
             .permissionIds(user.getPermissionIds());
 
@@ -47,7 +56,11 @@ class UserMapperTest {
   void shouldMapUserEntityToUser_whenEntityIsProvided() {
     // Given
     final var entity =
-        Instancio.of(UserEntity.class).set(field(UserEntity::getLanguage), "en").create();
+        Instancio.of(UserEntity.class)
+            .set(field(UserEntity::getLanguage), "en")
+            .set(field(UserEntity::getAuthProvider), AuthProvider.LOCAL)
+            .set(field(UserEntity::getStatus), UserStatus.ACTIVE)
+            .create();
 
     final var expectedFullName =
         new FullName(entity.getFullName().getFirstName(), entity.getFullName().getLastName());
@@ -63,7 +76,9 @@ class UserMapperTest {
         .returns(new EncodedPassword(entity.getEncodedPassword()), User::getEncodedPassword)
         .returns(entity.getBirthDate(), User::getBirthDate)
         .returns(entity.getCreatedAt(), User::getCreatedAt)
-        .returns(Language.EN, User::getLanguage);
+        .returns(Language.EN, User::getLanguage)
+        .returns(User.AuthProvider.LOCAL, User::getAuthProvider)
+        .returns(User.UserStatus.ACTIVE, User::getStatus);
 
     assertThat(result.getFullName()).usingRecursiveComparison().isEqualTo(expectedFullName);
 
