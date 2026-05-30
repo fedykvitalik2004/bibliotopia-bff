@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.vitalii.fedyk.bibliotopiabff.application.security.dto.UserIdentityView;
-import org.vitalii.fedyk.bibliotopiabff.application.security.port.in.ResolveUserIdentityUseCase;
+import org.vitalii.fedyk.bibliotopiabff.application.user.dto.UserView;
+import org.vitalii.fedyk.bibliotopiabff.application.user.port.in.GetUserUseCase;
 import org.vitalii.fedyk.bibliotopiabff.infrastructure.security.in.rest.dto.UserIdentityDto;
 import org.vitalii.fedyk.bibliotopiabff.infrastructure.security.provider.JwtProvider;
 import org.vitalii.fedyk.bibliotopiabff.infrastructure.security.util.CookieFactory;
@@ -36,7 +36,7 @@ import org.vitalii.fedyk.bibliotopiabff.infrastructure.security.util.CookieFacto
 public class AuthController {
   private final JwtProvider jwtProvider;
 
-  private final ResolveUserIdentityUseCase resolveUserIdentityUseCase;
+  private final GetUserUseCase getUserUseCase;
 
   @GetMapping("/me")
   @Operation(
@@ -86,12 +86,11 @@ public class AuthController {
 
     final Long userId = this.jwtProvider.extractUserId(refreshToken);
 
-    // ACL
-    final UserIdentityView userIdentityView = this.resolveUserIdentityUseCase.getIdentity(userId);
+    final UserView userView = this.getUserUseCase.findUserById(userId);
 
     final String newAccessToken =
         this.jwtProvider.generateAccessToken(
-            userIdentityView.userId(), userIdentityView.roles(), userIdentityView.permissions());
+            userView.id(), userView.roles(), userView.permissions());
 
     final ResponseCookie accessCookie =
         CookieFactory.createAccessCookie(newAccessToken, Duration.ofMinutes(15));

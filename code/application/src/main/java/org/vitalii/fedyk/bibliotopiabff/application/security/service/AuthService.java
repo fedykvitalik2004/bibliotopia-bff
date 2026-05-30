@@ -6,11 +6,10 @@ import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.vitalii.fedyk.bibliotopiabff.application.security.dto.UserIdentityView;
-import org.vitalii.fedyk.bibliotopiabff.application.security.dto.UserPrivilegesView;
-import org.vitalii.fedyk.bibliotopiabff.application.security.port.in.ResolveUserAccessRightsUseCase;
-import org.vitalii.fedyk.bibliotopiabff.application.security.port.in.ResolveUserIdentityUseCase;
-import org.vitalii.fedyk.bibliotopiabff.application.security.port.out.LoadUserIdentityPort;
+import org.vitalii.fedyk.bibliotopiabff.application.security.dto.PrivilegesView;
+import org.vitalii.fedyk.bibliotopiabff.application.security.dto.RoleData;
+import org.vitalii.fedyk.bibliotopiabff.application.security.port.in.GetDefaultRoleUseCase;
+import org.vitalii.fedyk.bibliotopiabff.application.security.port.in.ResolveAccessRightsUseCase;
 import org.vitalii.fedyk.bibliotopiabff.application.security.port.out.PermissionRepository;
 import org.vitalii.fedyk.bibliotopiabff.application.security.port.out.RoleRepository;
 import org.vitalii.fedyk.bibliotopiabff.domain.security.model.Permission;
@@ -18,37 +17,39 @@ import org.vitalii.fedyk.bibliotopiabff.domain.security.model.Role;
 
 @Service
 @AllArgsConstructor
-public class AuthService implements ResolveUserAccessRightsUseCase, ResolveUserIdentityUseCase {
+public class AuthService implements ResolveAccessRightsUseCase, GetDefaultRoleUseCase {
   private final RoleRepository roleRepository;
   private final PermissionRepository permissionRepository;
-  private final LoadUserIdentityPort loadUserIdentityPort;
 
   @Override
   @Transactional(readOnly = true)
-  public UserPrivilegesView resolvePrivileges(
+  public PrivilegesView resolvePrivileges(
       final Set<Long> roleIds, final Set<Long> directPermissionIds) {
     final List<Role> roles = this.roleRepository.findAllById(roleIds);
-    final Set<UserPrivilegesView.RoleView> roleViews =
+    final Set<PrivilegesView.RoleView> roleViews =
         roles.stream()
-            .map(role -> new UserPrivilegesView.RoleView(role.id(), role.name()))
+            .map(role -> new PrivilegesView.RoleView(role.id(), role.name()))
             .collect(Collectors.toSet());
 
     // Fetch role-based permissions
     final List<Permission> permissions =
         this.permissionRepository.findAllByRoleIdsOrDirectIds(roleIds, directPermissionIds);
-    final Set<UserPrivilegesView.PermissionView> permissionViews =
+    final Set<PrivilegesView.PermissionView> permissionViews =
         permissions.stream()
             .map(
-                permission ->
-                    new UserPrivilegesView.PermissionView(permission.id(), permission.name()))
+                permission -> new PrivilegesView.PermissionView(permission.id(), permission.name()))
             .collect(Collectors.toSet());
 
-    return new UserPrivilegesView(roleViews, permissionViews);
+    return new PrivilegesView(roleViews, permissionViews);
   }
 
   @Override
-  @Transactional(readOnly = true)
-  public UserIdentityView getIdentity(final Long userId) {
-    return this.loadUserIdentityPort.loadByUserId(userId);
+  public RoleData getDefault() {
+    final Role role = this.roleRepository.getDefault();
+    final Set<String> permissionNames =
+        this.permissionRepository.findAllByRoleIds(Set.of(role.id())).stream()
+            .map(Permission::name)
+            .collect(Collectors.toSet());
+    return new RoleData(role.id(), role.name(), permissionNames);
   }
 }

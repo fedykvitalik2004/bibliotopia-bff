@@ -2,19 +2,20 @@ package org.vitalii.fedyk.bibliotopiabff.application.user.service;
 
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.vitalii.fedyk.bibliotopiabff.application.user.dto.AccessNames;
+import org.vitalii.fedyk.bibliotopiabff.application.security.dto.PrivilegesView;
+import org.vitalii.fedyk.bibliotopiabff.application.security.dto.RoleData;
+import org.vitalii.fedyk.bibliotopiabff.application.security.port.in.GetDefaultRoleUseCase;
+import org.vitalii.fedyk.bibliotopiabff.application.security.port.in.ResolveAccessRightsUseCase;
 import org.vitalii.fedyk.bibliotopiabff.application.user.dto.CreateUserCommand;
 import org.vitalii.fedyk.bibliotopiabff.application.user.dto.UserView;
 import org.vitalii.fedyk.bibliotopiabff.application.user.port.in.CreateUserUseCase;
 import org.vitalii.fedyk.bibliotopiabff.application.user.port.in.GetUserUseCase;
 import org.vitalii.fedyk.bibliotopiabff.application.user.port.in.ResolveExternalUserUseCase;
-import org.vitalii.fedyk.bibliotopiabff.application.user.port.out.AccessMetadataProvider;
-import org.vitalii.fedyk.bibliotopiabff.application.user.port.out.DefaultRoleProvider;
 import org.vitalii.fedyk.bibliotopiabff.application.user.port.out.PasswordEncoder;
-import org.vitalii.fedyk.bibliotopiabff.application.user.port.out.RoleData;
 import org.vitalii.fedyk.bibliotopiabff.application.user.port.out.UserEventPublisher;
 import org.vitalii.fedyk.bibliotopiabff.application.user.port.out.UserRepository;
 import org.vitalii.fedyk.bibliotopiabff.domain.common.model.Email;
@@ -36,9 +37,9 @@ public class UserService implements CreateUserUseCase, ResolveExternalUserUseCas
 
   private final UserRepository userRepository;
 
-  private final DefaultRoleProvider defaultRoleProvider;
+  private final GetDefaultRoleUseCase getDefaultRoleUseCase;
 
-  private final AccessMetadataProvider accessMetadataProvider;
+  private final ResolveAccessRightsUseCase resolveAccessRightsUseCase;
 
   @Override
   @Transactional
@@ -58,8 +59,7 @@ public class UserService implements CreateUserUseCase, ResolveExternalUserUseCas
             command.birthDate(),
             language);
 
-    // ACL
-    final RoleData defaultRole = this.defaultRoleProvider.getDefault();
+    final RoleData defaultRole = this.getDefaultRoleUseCase.getDefault();
     user.addRoleId(defaultRole.roleId());
 
     final User savedUser = this.userRepository.save(user);
@@ -84,7 +84,7 @@ public class UserService implements CreateUserUseCase, ResolveExternalUserUseCas
             .orElseGet(() -> this.handleNotExistingUser(commandFullName, email, provider));
 
     final AccessNames accessNames =
-        this.accessMetadataProvider.getAccessNames(user.getRoleIds(), user.getPermissionIds());
+        this.resolveAccessNames(user.getRoleIds(), user.getPermissionIds());
     return UserView.builder()
         .id(user.getId())
         .firstName(user.getFullName().firstName())
@@ -104,7 +104,7 @@ public class UserService implements CreateUserUseCase, ResolveExternalUserUseCas
         this.userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
 
     final AccessNames accessNames =
-        this.accessMetadataProvider.getAccessNames(user.getRoleIds(), user.getPermissionIds());
+        this.resolveAccessNames(user.getRoleIds(), user.getPermissionIds());
 
     return this.buildUserView(user, accessNames);
   }
@@ -127,6 +127,8 @@ public class UserService implements CreateUserUseCase, ResolveExternalUserUseCas
   private User handleNotExistingUser(
       final FullName fullName, final Email email, User.AuthProvider provider) {
     final User user = User.createPartial(fullName, email, provider);
+    final RoleData defaultRole = this.getDefaultRoleUseCase.getDefault();
+    user.addRoleId(defaultRole.roleId());
     return this.userRepository.save(user);
   }
 
@@ -138,9 +140,6 @@ public class UserService implements CreateUserUseCase, ResolveExternalUserUseCas
     }
 
     final FullName mergedFullName = existingUser.getFullName().merge(commandFullName);
-    final RoleData defaultRole = this.defaultRoleProvider.getDefault();
-
-    existingUser.addRoleId(defaultRole.roleId());
     existingUser.setFullName(mergedFullName);
     return userRepository.save(existingUser);
   }
@@ -170,4 +169,19 @@ public class UserService implements CreateUserUseCase, ResolveExternalUserUseCas
             .language(user.getLanguage().getValue())
             .build());
   }
+
+  private AccessNames resolveAccessNames(final Set<Long> roleIds, final Set<Long> permissionIds) {
+    final PrivilegesView view =
+        this.resolveAccessRightsUseCase.resolvePrivileges(roleIds, permissionIds);
+    final Set<String> roles =
+        view.roles().stream().map(PrivilegesView.RoleView::name).collect(Collectors.toSet());
+
+    final Set<String> permissions =
+        view.permissions().stream()
+            .map(PrivilegesView.PermissionView::name)
+            .collect(Collectors.toSet());
+    return new AccessNames(roles, permissions);
+  }
+
+  public record AccessNames(Set<String> roles, Set<String> permissions) {}
 }
