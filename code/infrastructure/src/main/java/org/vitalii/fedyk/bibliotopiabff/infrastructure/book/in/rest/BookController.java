@@ -11,6 +11,7 @@ import java.time.ZoneId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,6 +38,7 @@ public class BookController {
   private final BookWebResponseMapper responseMapper;
 
   @PostMapping
+  @PreAuthorize("hasAuthority('books:create')")
   @Operation(
       summary = "Create a new book",
       description = "Registers a new book with localized validation rules")

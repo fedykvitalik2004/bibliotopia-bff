@@ -72,14 +72,14 @@ public class AuthController {
   @ApiResponses({
     @ApiResponse(responseCode = "200", description = "Access token refreshed successfully"),
     @ApiResponse(
-        responseCode = "403",
-        description = "Forbidden - Refresh token is missing or invalid")
+        responseCode = "401",
+        description = "Unauthorized - Refresh token is missing or expired"),
   })
   public ResponseEntity<Void> refreshAccessToken(
       @CookieValue(name = REFRESH_TOKEN_COOKIE_NAME, required = false) final String refreshToken) {
     if (refreshToken == null || !this.jwtProvider.isTokenValid(refreshToken)) {
       final ResponseCookie deleteAccessCookie = CookieFactory.createDeleteAccessCookie();
-      return ResponseEntity.status(HttpStatus.FORBIDDEN)
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
           .header(HttpHeaders.SET_COOKIE, deleteAccessCookie.toString())
           .build();
     }
