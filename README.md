@@ -10,6 +10,8 @@ Before running this command, ensure your Docker container is up and running (e.g
 mvn flyway:migrate -pl boot -Dflyway.url=jdbc:postgresql://localhost:5432/bibliotopia -Dflyway.user=user -Dflyway.password=user-pwd
 ```
 
+The Maven Flyway plugin automatically baselines a non-empty database at version 5 when no Flyway history exists. This matches the existing local database; empty databases still run migrations V1–V5 normally.
+
 ## Testing Setup
 
 To start the containers specifically for the test environment, run the following command in your terminal:

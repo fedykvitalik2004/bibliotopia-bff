@@ -21,7 +21,7 @@ public class SecurityConfig {
 
   private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-  @Bean //todo: improve here
+  @Bean // todo: improve here
   public SecurityFilterChain securityFilterChain(final HttpSecurity http) {
     http.csrf(AbstractHttpConfigurer::disable)
         .sessionManagement(

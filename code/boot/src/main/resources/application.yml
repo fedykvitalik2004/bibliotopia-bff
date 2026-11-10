@@ -13,12 +13,13 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-apis:
-  book-catalog:
-    base: https://openlibrary.org
-  currency:
-    base: https://currencyapi.net/api
-    key: a5496027130f4776bb4628a0567ff4682937
+application:
+  api:
+    book-catalog:
+      base: https://openlibrary.org
+    currency:
+      base: https://currencyapi.net/api
+      key: a5496027130f4776bb4628a0567ff4682937
 resilience4j:
   circuitbreaker:
     instances:
