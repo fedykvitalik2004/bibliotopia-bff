@@ -81,8 +81,8 @@ jobs:
           from pathlib import Path
 
           reports = [
-              ("Unit test coverage", Path("boot/target/site/jacoco-unit-aggregate/jacoco.xml")),
-              ("Integration test coverage", Path("boot/target/site/jacoco-integration-aggregate/jacoco.xml")),
+              ("Unit test coverage (all modules)", Path("boot/target/site/jacoco-unit-aggregate/jacoco.xml")),
+              ("Integration test coverage (boot + infrastructure)", Path("boot/target/site/jacoco-integration-aggregate/jacoco.xml")),
           ]
           summary = Path(os.environ["GITHUB_STEP_SUMMARY"])
           labels = {
