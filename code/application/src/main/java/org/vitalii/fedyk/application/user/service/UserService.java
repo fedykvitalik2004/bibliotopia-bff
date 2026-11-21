@@ -1,0 +1,136 @@
+package org.vitalii.fedyk.application.user.service;
+
+import java.util.Set;
+import java.util.stream.Collectors;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.vitalii.fedyk.application.security.dto.PrivilegesView;
+import org.vitalii.fedyk.application.security.dto.RoleData;
+import org.vitalii.fedyk.application.security.port.in.GetDefaultRoleUseCase;
+import org.vitalii.fedyk.application.security.port.in.ResolveAccessRightsUseCase;
+import org.vitalii.fedyk.application.user.dto.CreateUserCommand;
+import org.vitalii.fedyk.application.user.dto.UserView;
+import org.vitalii.fedyk.application.user.port.in.CreateUserUseCase;
+import org.vitalii.fedyk.application.user.port.in.GetUserUseCase;
+import org.vitalii.fedyk.application.user.port.out.PasswordEncoder;
+import org.vitalii.fedyk.application.user.port.out.UserEventPublisher;
+import org.vitalii.fedyk.application.user.port.out.UserRepository;
+import org.vitalii.fedyk.domain.common.model.Email;
+import org.vitalii.fedyk.domain.common.model.Language;
+import org.vitalii.fedyk.domain.user.event.UserCreatedEvent;
+import org.vitalii.fedyk.domain.user.exception.UserAlreadyExistsException;
+import org.vitalii.fedyk.domain.user.exception.UserNotFoundException;
+import org.vitalii.fedyk.domain.user.model.EncodedPassword;
+import org.vitalii.fedyk.domain.user.model.FullName;
+import org.vitalii.fedyk.domain.user.model.User;
+
+@Service
+@AllArgsConstructor
+public class UserService implements CreateUserUseCase, GetUserUseCase {
+  private final UserEventPublisher eventPublisher;
+
+  private final PasswordEncoder passwordEncoder;
+
+  private final UserRepository userRepository;
+
+  private final GetDefaultRoleUseCase getDefaultRoleUseCase;
+
+  private final ResolveAccessRightsUseCase resolveAccessRightsUseCase;
+
+  @Override
+  @Transactional
+  public UserView create(final CreateUserCommand command) {
+    final Email email = new Email(command.email());
+    if (this.userRepository.existsByEmail(email)) {
+      throw new UserAlreadyExistsException(email.value());
+    }
+    final EncodedPassword encodedPassword = this.passwordEncoder.encode(command.rawPassword());
+
+    final Language language = Language.fromCode(command.language());
+    final User user =
+        User.create(
+            new FullName(command.firstName(), command.lastName()),
+            email,
+            encodedPassword,
+            command.birthDate(),
+            language);
+
+    final RoleData defaultRole = this.getDefaultRoleUseCase.getDefault();
+    user.addRoleId(defaultRole.roleId());
+
+    final User savedUser = this.userRepository.save(user);
+
+    this.publishUserCreatedEvent(savedUser);
+
+    return this.buildUserView(savedUser, defaultRole);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public UserView findUserById(final long userId) {
+    final User user =
+        this.userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+
+    final AccessNames accessNames =
+        this.resolveAccessNames(user.getRoleIds(), user.getPermissionIds());
+
+    return this.buildUserView(user, accessNames);
+  }
+
+  private UserView buildUserView(final User user, final AccessNames accessNames) {
+    final FullName fullName = user.getFullName();
+
+    return UserView.builder()
+        .id(user.getId())
+        .firstName(fullName.firstName())
+        .lastName(fullName.lastName())
+        .email(user.getEmail().value())
+        .birthDate(user.getBirthDate())
+        .createdAt(user.getCreatedAt())
+        .roles(accessNames.roles())
+        .permissions(accessNames.permissions())
+        .build();
+  }
+
+  private UserView buildUserView(final User user, final RoleData defaultRole) {
+    final FullName fullName = user.getFullName();
+
+    return UserView.builder()
+        .id(user.getId())
+        .firstName(fullName.firstName())
+        .lastName(fullName.lastName())
+        .email(user.getEmail().value())
+        .birthDate(user.getBirthDate())
+        .createdAt(user.getCreatedAt())
+        .roles(Set.of(defaultRole.roleName()))
+        .permissions(defaultRole.permissionNames())
+        .build();
+  }
+
+  private void publishUserCreatedEvent(final User user) {
+    this.eventPublisher.publish(
+        UserCreatedEvent.builder()
+            .userId(user.getId())
+            .firstName(user.getFullName().firstName())
+            .lastName(user.getFullName().lastName())
+            .email(user.getEmail().value())
+            .language(user.getLanguage().getValue())
+            .build());
+  }
+
+  private AccessNames resolveAccessNames(final Set<Long> roleIds, final Set<Long> permissionIds) {
+    final PrivilegesView view =
+        this.resolveAccessRightsUseCase.resolvePrivileges(roleIds, permissionIds);
+    final Set<String> roles =
+        view.roles().stream().map(PrivilegesView.RoleView::name).collect(Collectors.toSet());
+
+    final Set<String> permissions =
+        view.permissions().stream()
+            .map(PrivilegesView.PermissionView::name)
+            .collect(Collectors.toSet());
+    return new AccessNames(roles, permissions);
+  }
+
+  public record AccessNames(Set<String> roles, Set<String> permissions) {}
+}

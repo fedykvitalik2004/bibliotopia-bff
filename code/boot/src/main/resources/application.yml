@@ -31,7 +31,7 @@ resilience4j:
         permitted-number-of-calls-in-half-open-state: 4
         minimum-number-of-calls: 5 # Min amount needed for decision-making
         record-exceptions:
-          - org.vitalii.fedyk.bibliotopiabff.infrastructure.common.exception.ExternalServiceException
+          - org.vitalii.fedyk.infrastructure.common.exception.ExternalServiceException
       currencyExchange:
         sliding-window-size: 10
         minimum-number-of-calls: 4
@@ -40,4 +40,4 @@ resilience4j:
           seconds: 180
         permitted-number-of-calls-in-half-open-state: 5
         record-exceptions:
-          - org.vitalii.fedyk.bibliotopiabff.infrastructure.common.exception.ExternalServiceException
+          - org.vitalii.fedyk.infrastructure.common.exception.ExternalServiceException

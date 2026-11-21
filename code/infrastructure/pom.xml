@@ -13,6 +13,10 @@
     <name>${project.groupId}:${project.artifactId}</name>
     <packaging>jar</packaging>
 
+    <properties>
+        <jacoco.skipIT>false</jacoco.skipIT>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.vitalii.fedyk.bibliotopiabff</groupId>
@@ -117,11 +121,7 @@
                 </configuration>
                 <executions>
                     <execution>
-                        <id>integration-tests</id>
-                        <goals>
-                            <goal>integration-test</goal>
-                            <goal>verify</goal>
-                        </goals>
+                        <id>default</id>
                         <configuration>
                             <argLine>@{jacocoItArgLine}</argLine>
                         </configuration>
@@ -143,23 +143,23 @@
                             <inputSpec>${project.parent.basedir}/openapi/openapi.yaml</inputSpec>
                             <generatorName>spring</generatorName>
                             <output>${project.build.directory}/generated-sources/openapi</output>
-                            <apiPackage>org.vitalii.fedyk.bibliotopiabff.infrastructure.generated.api</apiPackage>
-                            <modelPackage>org.vitalii.fedyk.bibliotopiabff.infrastructure.generated.model</modelPackage>
+                            <apiPackage>org.vitalii.fedyk.infrastructure.generated.api</apiPackage>
+                            <modelPackage>org.vitalii.fedyk.infrastructure.generated.model</modelPackage>
                             <generateModels>false</generateModels>
                             <generateApiTests>false</generateApiTests>
                             <generateModelTests>false</generateModelTests>
                             <schemaMappings>
-                                <schemaMapping>AuthorRequest=org.vitalii.fedyk.bibliotopiabff.infrastructure.author.in.rest.dto.request.AuthorRequest</schemaMapping>
-                                <schemaMapping>AuthorTranslationRequest=org.vitalii.fedyk.bibliotopiabff.infrastructure.author.in.rest.dto.request.TranslationRequest</schemaMapping>
-                                <schemaMapping>AuthorResponse=org.vitalii.fedyk.bibliotopiabff.infrastructure.author.in.rest.dto.response.AuthorResponse</schemaMapping>
-                                <schemaMapping>AuthorTranslationResponse=org.vitalii.fedyk.bibliotopiabff.infrastructure.author.in.rest.dto.response.TranslationResponse</schemaMapping>
-                                <schemaMapping>BookRequest=org.vitalii.fedyk.bibliotopiabff.infrastructure.book.in.rest.dto.request.BookRequest</schemaMapping>
-                                <schemaMapping>BookTranslationRequest=org.vitalii.fedyk.bibliotopiabff.infrastructure.book.in.rest.dto.request.BookRequest.TranslationRequest</schemaMapping>
-                                <schemaMapping>BookResponse=org.vitalii.fedyk.bibliotopiabff.infrastructure.book.in.rest.dto.response.BookResponse</schemaMapping>
-                                <schemaMapping>BookTranslationResponse=org.vitalii.fedyk.bibliotopiabff.infrastructure.book.in.rest.dto.response.BookResponse.TranslationResponse</schemaMapping>
-                                <schemaMapping>RegisterUserDto=org.vitalii.fedyk.bibliotopiabff.infrastructure.user.in.rest.dto.RegisterUserDto</schemaMapping>
-                                <schemaMapping>UserResponseDto=org.vitalii.fedyk.bibliotopiabff.infrastructure.user.in.rest.dto.UserResponseDto</schemaMapping>
-                                <schemaMapping>ImprovementResponse=org.vitalii.fedyk.bibliotopiabff.infrastructure.feedback.in.rest.dto.ImprovementResponse</schemaMapping>
+                                <schemaMapping>AuthorRequest=org.vitalii.fedyk.infrastructure.author.in.rest.dto.request.AuthorRequest</schemaMapping>
+                                <schemaMapping>AuthorTranslationRequest=org.vitalii.fedyk.infrastructure.author.in.rest.dto.request.TranslationRequest</schemaMapping>
+                                <schemaMapping>AuthorResponse=org.vitalii.fedyk.infrastructure.author.in.rest.dto.response.AuthorResponse</schemaMapping>
+                                <schemaMapping>AuthorTranslationResponse=org.vitalii.fedyk.infrastructure.author.in.rest.dto.response.TranslationResponse</schemaMapping>
+                                <schemaMapping>BookRequest=org.vitalii.fedyk.infrastructure.book.in.rest.dto.request.BookRequest</schemaMapping>
+                                <schemaMapping>BookTranslationRequest=org.vitalii.fedyk.infrastructure.book.in.rest.dto.request.BookRequest.TranslationRequest</schemaMapping>
+                                <schemaMapping>BookResponse=org.vitalii.fedyk.infrastructure.book.in.rest.dto.response.BookResponse</schemaMapping>
+                                <schemaMapping>BookTranslationResponse=org.vitalii.fedyk.infrastructure.book.in.rest.dto.response.BookResponse.TranslationResponse</schemaMapping>
+                                <schemaMapping>RegisterUserDto=org.vitalii.fedyk.infrastructure.user.in.rest.dto.RegisterUserDto</schemaMapping>
+                                <schemaMapping>UserResponseDto=org.vitalii.fedyk.infrastructure.user.in.rest.dto.UserResponseDto</schemaMapping>
+                                <schemaMapping>ImprovementResponse=org.vitalii.fedyk.infrastructure.feedback.in.rest.dto.ImprovementResponse</schemaMapping>
                             </schemaMappings>
                             <configOptions>
                                 <interfaceOnly>true</interfaceOnly>

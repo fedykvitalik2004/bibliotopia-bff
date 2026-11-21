@@ -1,0 +1,35 @@
+package org.vitalii.fedyk.infrastructure.security.out.persistence;
+
+import java.util.List;
+import java.util.Set;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Repository;
+import org.vitalii.fedyk.application.security.port.out.PermissionRepository;
+import org.vitalii.fedyk.domain.security.model.Permission;
+import org.vitalii.fedyk.infrastructure.security.out.persistence.entity.PermissionEntity;
+import org.vitalii.fedyk.infrastructure.security.out.persistence.repository.PermissionJpaRepository;
+
+@Repository
+@AllArgsConstructor
+public class PermissionRepositoryImpl implements PermissionRepository {
+  private final PermissionJpaRepository repository;
+
+  @Override
+  public List<Permission> findAllByRoleIds(final Set<Long> permissionIds) {
+    return this.repository.findAllByRoleIds(permissionIds).stream()
+        .map(PermissionRepositoryImpl::applyMapping)
+        .toList();
+  }
+
+  @Override
+  public List<Permission> findAllByRoleIdsOrDirectIds(
+      final Set<Long> roleIds, final Set<Long> directPermissionIds) {
+    return this.repository.findAllByRoleIdsOrDirectIds(roleIds, directPermissionIds).stream()
+        .map(PermissionRepositoryImpl::applyMapping)
+        .toList();
+  }
+
+  private static Permission applyMapping(final PermissionEntity entity) {
+    return new Permission(entity.getId(), entity.getName());
+  }
+}
