@@ -11,7 +11,7 @@ docker compose -f docker-compose.yml -f docker-compose.test.yml up -d --wait
 Apply the database schema and test data from the `code/` directory. Schema migrations are in `boot/src/main/resources/db/migration`; test data is in `boot/src/test/resources/db/testdata`.
 
 ```bash
-./mvnw flyway:migrate -pl boot \
+./mvnw -N flyway:migrate \
   -Dflyway.url=jdbc:postgresql://localhost:5432/bibliotopia \
   -Dflyway.user=user \
   -Dflyway.password=user-pwd \

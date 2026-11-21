@@ -117,28 +117,6 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
 
-            <plugin>
-                <groupId>org.flywaydb</groupId>
-                <artifactId>flyway-maven-plugin</artifactId>
-                <version>10.16.0</version>
-                <configuration>
-                    <baselineOnMigrate>true</baselineOnMigrate>
-                    <baselineVersion>5</baselineVersion>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.postgresql</groupId>
-                        <artifactId>postgresql</artifactId>
-                        <version>42.6.2</version>
-                    </dependency>
-
-                    <dependency>
-                        <groupId>org.flywaydb</groupId>
-                        <artifactId>flyway-database-postgresql</artifactId>
-                        <version>10.16.0</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
         </plugins>
     </build>
 

@@ -41,7 +41,7 @@ jobs:
       - name: Apply database schema and test data
         working-directory: code
         run: >-
-          ./mvnw --batch-mode --no-transfer-progress flyway:migrate -pl boot
+          ./mvnw --batch-mode --no-transfer-progress -N flyway:migrate
           -Dflyway.url=jdbc:postgresql://localhost:5432/bibliotopia
           -Dflyway.user=user
           -Dflyway.password=user-pwd
