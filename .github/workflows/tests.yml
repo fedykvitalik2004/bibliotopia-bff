@@ -11,20 +11,6 @@ jobs:
   tests:
     name: Run unit and integration tests
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:17
-        env:
-          POSTGRES_USER: user
-          POSTGRES_PASSWORD: user-pwd
-          POSTGRES_DB: bibliotopia
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd "pg_isready -U user -d bibliotopia"
-          --health-interval 5s
-          --health-timeout 5s
-          --health-retries 10
     permissions:
       contents: read
       checks: write
@@ -41,6 +27,14 @@ jobs:
           java-version: '21'
           cache: maven
           cache-dependency-path: code/pom.xml
+
+      - name: Start test containers
+        working-directory: code
+        env:
+          APP_DB_USER: user
+          APP_DB_PASSWORD: user-pwd
+          APP_DB_NAME: bibliotopia
+        run: docker compose -f docker-compose.yml -f docker-compose.test.yml up -d --wait
 
       - name: Apply database schema and test data
         working-directory: code
