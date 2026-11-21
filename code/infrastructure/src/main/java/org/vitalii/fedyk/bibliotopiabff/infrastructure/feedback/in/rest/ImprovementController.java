@@ -9,21 +9,18 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.vitalii.fedyk.bibliotopiabff.application.feedback.port.in.GetImprovementsUseCase;
 import org.vitalii.fedyk.bibliotopiabff.domain.feedback.model.ImprovementItem;
 import org.vitalii.fedyk.bibliotopiabff.infrastructure.feedback.in.rest.dto.ImprovementResponse;
+import org.vitalii.fedyk.bibliotopiabff.infrastructure.generated.api.ImprovementsApi;
 
 @RestController
-@RequestMapping("/api/v1/improvements")
 @RequiredArgsConstructor
 @Tag(name = "Improvement", description = "Endpoints for retrieving system improvements")
-public class ImprovementController {
+public class ImprovementController implements ImprovementsApi {
   private final GetImprovementsUseCase getImprovementsUseCase;
 
-  @GetMapping
   @Operation(
       summary = "Get all improvements",
       description = "Retrieves a list of all recorded system improvements")
@@ -34,7 +31,8 @@ public class ImprovementController {
           @Content(
               mediaType = "application/json",
               array = @ArraySchema(schema = @Schema(implementation = ImprovementResponse.class))))
-  public ResponseEntity<List<ImprovementResponse>> getAll() {
+  @Override
+  public ResponseEntity<List<ImprovementResponse>> getAllImprovements() {
     return ResponseEntity.ok(
         this.getImprovementsUseCase.execute().stream().map(this::toResponse).toList());
   }

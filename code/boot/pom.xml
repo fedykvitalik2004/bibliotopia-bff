@@ -56,6 +56,26 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>3.5.3</version>
+                <configuration>
+                    <argLine>@{jacocoItArgLine}</argLine>
+                    <includes>
+                        <include>**/*IT.java</include>
+                    </includes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>integration-tests</id>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <executions>
@@ -67,6 +87,24 @@
                         </goals>
                         <configuration>
                             <includeCurrentProject>true</includeCurrentProject>
+                            <dataFileIncludes>
+                                <dataFileInclude>**/jacoco-unit.exec</dataFileInclude>
+                            </dataFileIncludes>
+                            <outputDirectory>${project.build.directory}/site/jacoco-unit-aggregate</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>aggregate-integration-test-coverage</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>report-aggregate</goal>
+                        </goals>
+                        <configuration>
+                            <includeCurrentProject>true</includeCurrentProject>
+                            <dataFileIncludes>
+                                <dataFileInclude>**/jacoco-integration.exec</dataFileInclude>
+                            </dataFileIncludes>
+                            <outputDirectory>${project.build.directory}/site/jacoco-integration-aggregate</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>

@@ -51,7 +51,7 @@ class ImprovementControllerTest {
     when(this.getImprovementsUseCase.execute()).thenReturn(List.of(item1, item2));
 
     // When
-    final ResponseEntity<List<ImprovementResponse>> response = this.controller.getAll();
+    final ResponseEntity<List<ImprovementResponse>> response = this.controller.getAllImprovements();
 
     // Then
     assertEquals(200, response.getStatusCode().value());

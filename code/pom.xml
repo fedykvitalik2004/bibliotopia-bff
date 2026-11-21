@@ -31,6 +31,8 @@
 
         <jacoco.utReportFolder>${project.build.directory}/site/jacoco-unit</jacoco.utReportFolder>
         <jacoco.utReportFile>${project.build.directory}/jacoco-unit.exec</jacoco.utReportFile>
+        <jacoco.itReportFolder>${project.build.directory}/site/jacoco-integration</jacoco.itReportFolder>
+        <jacoco.itReportFile>${project.build.directory}/jacoco-integration.exec</jacoco.itReportFile>
 
         <lombok.version>1.18.38</lombok.version>
         <google.zxing.version>3.5.3</google.zxing.version>
@@ -132,35 +134,6 @@
                 <version>6.2.9</version>
             </dependency>
 
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-security</artifactId>
-                <version>4.0.6</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-oauth2-client</artifactId>
-                <version>4.0.6</version>
-            </dependency>
-
-            <dependency>
-                <groupId>io.jsonwebtoken</groupId>
-                <artifactId>jjwt-api</artifactId>
-                <version>0.12.5</version>
-            </dependency>
-
-            <dependency>
-                <groupId>io.jsonwebtoken</groupId>
-                <artifactId>jjwt-impl</artifactId>
-                <version>0.12.5</version>
-            </dependency>
-
-            <dependency>
-                <groupId>io.jsonwebtoken</groupId>
-                <artifactId>jjwt-jackson</artifactId>
-                <version>0.12.5</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -215,6 +188,16 @@
                         </configuration>
                     </execution>
                     <execution>
+                        <id>integration-test-coverage-agent</id>
+                        <goals>
+                            <goal>prepare-agent-integration</goal>
+                        </goals>
+                        <configuration>
+                            <propertyName>jacocoItArgLine</propertyName>
+                            <destFile>${jacoco.itReportFile}</destFile>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>unit-test-coverage-report</id>
                         <phase>verify</phase>
                         <goals>
@@ -223,6 +206,17 @@
                         <configuration>
                             <dataFile>${jacoco.utReportFile}</dataFile>
                             <outputDirectory>${jacoco.utReportFolder}</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>integration-test-coverage-report</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                        <configuration>
+                            <dataFile>${jacoco.itReportFile}</dataFile>
+                            <outputDirectory>${jacoco.itReportFolder}</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>

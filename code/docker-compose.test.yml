@@ -5,4 +5,7 @@ services:
       POSTGRES_PASSWORD: user-pwd
       POSTGRES_DB: bibliotopia
     volumes:
-      - ./boot/src/test/resources/docker/postgres_init:/docker-entrypoint-initdb.d/
+      - app_db_test_data:/var/lib/postgresql/data
+
+volumes:
+  app_db_test_data:

@@ -7,17 +7,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.Positive;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.vitalii.fedyk.bibliotopiabff.application.author.port.in.CreateAuthorUseCase;
 import org.vitalii.fedyk.bibliotopiabff.application.author.port.in.GetAllAuthorsUseCase;
@@ -28,12 +22,12 @@ import org.vitalii.fedyk.bibliotopiabff.infrastructure.author.in.rest.dto.respon
 import org.vitalii.fedyk.bibliotopiabff.infrastructure.author.in.rest.mapper.AuthorRequestMapper;
 import org.vitalii.fedyk.bibliotopiabff.infrastructure.author.in.rest.mapper.AuthorResponseMapper;
 import org.vitalii.fedyk.bibliotopiabff.infrastructure.common.in.rest.dto.ErrorDto;
+import org.vitalii.fedyk.bibliotopiabff.infrastructure.generated.api.AuthorsApi;
 
 @RestController
-@RequestMapping("/api/v1/authors")
 @RequiredArgsConstructor
 @Tag(name = "Author", description = "Endpoints for creating and retrieving authors")
-public class AuthorController {
+public class AuthorController implements AuthorsApi {
   private final AuthorResponseMapper authorResponseMapper;
 
   private final AuthorRequestMapper authorRequestMapper;
@@ -47,7 +41,6 @@ public class AuthorController {
   @Operation(
       summary = "Create a new author",
       description = "Validates the request and creates a new author in the system")
-  @PostMapping
   @ApiResponses({
     @ApiResponse(
         responseCode = "201",
@@ -58,7 +51,8 @@ public class AuthorController {
         description = "Validation error: Check the response body for localized messages",
         content = @Content(schema = @Schema(implementation = ErrorDto.class)))
   })
-  public ResponseEntity<AuthorResponse> create(@Valid @RequestBody AuthorRequest request) {
+  @Override
+  public ResponseEntity<AuthorResponse> createAuthor(@RequestBody final AuthorRequest request) {
     final Author author = this.authorRequestMapper.toAuthor(request);
 
     final Author savedAuthor = this.createAuthorUseCase.createAuthor(author);
@@ -67,7 +61,6 @@ public class AuthorController {
         this.authorResponseMapper.toResponse(savedAuthor), HttpStatus.CREATED);
   }
 
-  @GetMapping
   @Operation(summary = "Get all authors", description = "Retrieves a list of all authors")
   @ApiResponse(
       responseCode = "200",
@@ -76,7 +69,8 @@ public class AuthorController {
           @Content(
               mediaType = "application/json",
               array = @ArraySchema(schema = @Schema(implementation = AuthorResponse.class))))
-  public ResponseEntity<List<AuthorResponse>> getAll() {
+  @Override
+  public ResponseEntity<List<AuthorResponse>> getAllAuthors() {
     final List<AuthorResponse> response =
         this.getAllAuthorsUseCase.getAllAuthors().stream()
             .map(this.authorResponseMapper::toResponse)
@@ -85,7 +79,6 @@ public class AuthorController {
     return ResponseEntity.ok(response);
   }
 
-  @GetMapping("/{id}")
   @Operation(
       summary = "Get author by ID",
       description = "Retrieves a single author based on their unique identifier")
@@ -99,7 +92,8 @@ public class AuthorController {
         description = "Author not found",
         content = @Content(schema = @Schema(implementation = ErrorDto.class)))
   })
-  public ResponseEntity<AuthorResponse> getById(@PathVariable @Positive final Long id) {
+  @Override
+  public ResponseEntity<AuthorResponse> getAuthorById(final Long id) {
     return this.getAuthorByIdUseCase
         .getAuthor(id)
         .map(author -> ResponseEntity.ok(this.authorResponseMapper.toResponse(author)))

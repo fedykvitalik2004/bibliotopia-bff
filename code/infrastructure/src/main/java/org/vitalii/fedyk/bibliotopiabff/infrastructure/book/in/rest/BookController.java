@@ -6,17 +6,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import java.time.ZoneId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.ErrorResponse;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.vitalii.fedyk.bibliotopiabff.application.book.dto.BookPricingResult;
 import org.vitalii.fedyk.bibliotopiabff.application.book.dto.CreateBookCommand;
@@ -25,20 +21,18 @@ import org.vitalii.fedyk.bibliotopiabff.infrastructure.book.in.rest.dto.request.
 import org.vitalii.fedyk.bibliotopiabff.infrastructure.book.in.rest.dto.response.BookResponse;
 import org.vitalii.fedyk.bibliotopiabff.infrastructure.book.in.rest.mapper.BookWebRequestMapper;
 import org.vitalii.fedyk.bibliotopiabff.infrastructure.book.in.rest.mapper.BookWebResponseMapper;
+import org.vitalii.fedyk.bibliotopiabff.infrastructure.generated.api.BooksApi;
 
 @RestController
-@RequestMapping("/api/v1/books")
 @RequiredArgsConstructor
 @Tag(name = "Book", description = "Endpoints for creating and managing book records")
-public class BookController {
+public class BookController implements BooksApi {
   private final CreateBookUseCase createBookUseCase;
 
   private final BookWebRequestMapper requestMapper;
 
   private final BookWebResponseMapper responseMapper;
 
-  @PostMapping
-  @PreAuthorize("hasAuthority('books:create')")
   @Operation(
       summary = "Create a new book",
       description = "Registers a new book with localized validation rules")
@@ -61,10 +55,11 @@ public class BookController {
    *     pricing policies.
    * @return A ResponseEntity containing the created book and a status of 201 (Created).
    */
-  public ResponseEntity<BookResponse> create(
-      @Valid @RequestBody final BookRequest request,
-      @RequestHeader(value = "X-Timezone") final String timezone) {
-    final ZoneId userZoneId = ZoneId.of(timezone);
+  @Override
+  public ResponseEntity<BookResponse> createBook(
+      @RequestHeader(value = "X-Timezone") final String xTimezone,
+      @RequestBody final BookRequest request) {
+    final ZoneId userZoneId = ZoneId.of(xTimezone);
     final CreateBookCommand command = this.requestMapper.toCreateBookCommand(request, userZoneId);
     final BookPricingResult savedBook = this.createBookUseCase.create(command);
     return new ResponseEntity<>(this.responseMapper.toBookResponse(savedBook), HttpStatus.CREATED);
