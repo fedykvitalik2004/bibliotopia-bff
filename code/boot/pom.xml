@@ -60,7 +60,6 @@
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>3.5.3</version>
                 <configuration>
-                    <argLine>@{jacocoItArgLine}</argLine>
                     <includes>
                         <include>**/*IT.java</include>
                     </includes>
@@ -72,6 +71,9 @@
                             <goal>integration-test</goal>
                             <goal>verify</goal>
                         </goals>
+                        <configuration>
+                            <argLine>@{jacocoItArgLine}</argLine>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

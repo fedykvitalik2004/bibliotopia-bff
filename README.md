@@ -1,21 +1,27 @@
 # Bibliotopia BFF
 
-## Database Migrations
+## Running tests
 
-To ensure your local database schema is synchronized with your current code, you must execute the Flyway migration scripts.
-
-Before running this command, ensure your Docker container is up and running (e.g., docker compose up -d). From the project root, run:
+Before running the tests, start the test PostgreSQL and MinIO containers from the `code/` directory:
 
 ```bash
-mvn flyway:migrate -pl boot -Dflyway.url=jdbc:postgresql://localhost:5432/bibliotopia -Dflyway.user=user -Dflyway.password=user-pwd
+docker compose -f docker-compose.yml -f docker-compose.test.yml up -d
 ```
 
-The Maven Flyway plugin automatically baselines a non-empty database at version 5 when no Flyway history exists. This matches the existing local database; empty databases still run migrations V1–V5 normally.
-
-## Testing Setup
-
-To start the containers specifically for the test environment, run the following command in your terminal:
+Apply the database schema and test data from the `code/` directory. Schema migrations are in `boot/src/main/resources/db/migration`; test data is in `boot/src/test/resources/db/testdata`.
 
 ```bash
-docker compose -f docker-compose.yml -f docker-compose.test.yml up
+./mvnw flyway:migrate -pl boot \
+  -Dflyway.url=jdbc:postgresql://localhost:5432/bibliotopia \
+  -Dflyway.user=user \
+  -Dflyway.password=user-pwd \
+  -Dflyway.locations=filesystem:boot/src/main/resources/db/migration,filesystem:boot/src/test/resources/db/testdata
 ```
+
+Finally, run the unit and integration tests:
+
+```bash
+./mvnw clean install
+```
+
+Run the migration command only against the test database. On its first run, the test database schema must be empty. If an existing Docker volume contains tables created by the former Docker init scripts, reset that test volume before migrating.
